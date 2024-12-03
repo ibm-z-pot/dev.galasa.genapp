@@ -96,27 +96,22 @@ public class TestPostcode {
       String inputContainerName = "LGACJV02-INPUT";
       String outputContainerName = "LGACJV02-OUTPUT";
       String inputData = "EU99 XYZ";
+      String outputData = "";
 
       logger.info("This is a galasa test of CECI LINK to " + programName);
 
       cics.ceci().startCECISession(terminal);
 
-      ICeciResponse resp = cics.ceci().putContainer(terminal, channelName, inputContainerName, inputData, null, null,
+      ICeciResponse resp = cics.ceci().putContainer(terminal, channelName, inputContainerName, inputData, "CHAR", null,
             null);
       resp.checkNormal();
 
-      // resp = cics.ceci().linkProgramWithChannel(ceciTerminal, programName,
-      // channelName, null, null, false);
-      // resp.checkNormal();
+      resp = cics.ceci().linkProgramWithChannel(terminal, programName, channelName, null, null, false);
+      resp.checkNormal();
 
-      // resp = cics.ceci().getContainer(ceciTerminal, channelName, containerName,
-      // variableName, null, null);
-      // resp.checkNormal();
-      // assertThat(cics.ceci().retrieveVariableText(ceciTerminal, "&" +
-      // variableName)).isUpperCase();
-      // assertThat(cics.ceci().retrieveVariableText(ceciTerminal, "&" +
-      // variableName)).startsWith(content.toUpperCase());
+      resp = cics.ceci().getContainer(terminal, channelName, outputContainerName, outputData, null, null);
+      resp.checkNormal();
+
       terminal.pf3().waitForKeyboard();
    }
-
 }
